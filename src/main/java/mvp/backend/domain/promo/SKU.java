@@ -1,0 +1,32 @@
+package mvp.backend.domain.promo;
+
+import java.util.List;
+
+public class SKU {
+    private int id;
+    private String name;
+
+    public SKU() {
+    }
+
+    public SKU(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
