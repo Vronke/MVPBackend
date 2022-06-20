@@ -21,7 +21,7 @@ public class PromoController {
     }
 
     @PostMapping(value = "/createPromo")
-    public  boolean createPromo(@RequestBody PromoSKU promoSku) {
+    public int createPromo(@RequestBody PromoSKU promoSku) {
         return FactoryPromo.createPromo(promoSku.getSku(), promoSku.getPromoList()[0]);
     }
 

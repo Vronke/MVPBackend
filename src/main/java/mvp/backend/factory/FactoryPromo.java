@@ -10,27 +10,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FactoryPromo {
-    public static boolean createPromo(SKU sku, PromoHeader promo){
+    public static int createPromo(SKU sku, PromoHeader promo){
         if (checkPromo(sku, promo)){
             try {
                 Connection connection = DriverManager.getConnection(ServerProperty.CONNECTION_STRING);
                 connection.setAutoCommit(false);
                 connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
                 String insert = "INSERT INTO [PromoPlannerMVP].[dbo].[Promo_Header]" +
-                        "  ([IdSKU], [IdPromo], [IdAdd], [DateMin], [DateMax], [IdUser], [IdStatusApproval])" +
-                        "  VALUES (?, 0, 0, ?, ?, 0, 0)";
+                        "  ([IdSKU], [IdPromo], [IdAdd], [DateMin], [DateMax], [IdUser], [IdStatusApproval], Volume)" +
+                        "  VALUES (?, 0, 0, ?, ?, 0, 0, ?); SELECT SCOPE_IDENTITY()";
                 PreparedStatement statement = connection.prepareStatement(insert);
                 statement.setInt(1, sku.getId());
                 statement.setDate(2, promo.getDateStart());
                 statement.setDate(3, promo.getDateEnd());
-                statement.executeUpdate();
+                statement.setFloat(4, promo.getVolume());
+                ResultSet rs = statement.executeQuery();
                 connection.commit();
-                return true;
+                if (rs.next()){
+                    return rs.getInt(1);
+                }
+                return -1;
             } catch (SQLException e){
-                return false;
+                return -1;
             }
         } else {
-            return false;
+            return -1;
         }
     }
     public static boolean checkPromo(SKU sku, PromoHeader promo){
@@ -64,12 +68,13 @@ public class FactoryPromo {
                 connection.setAutoCommit(false);
                 connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
                 String insert = "UPDATE [PromoPlannerMVP].[dbo].[Promo_Header]" +
-                        "  SET [DateMin] = ?, [DateMax] = ?" +
+                        "  SET [DateMin] = ?, [DateMax] = ?, Volume = ?" +
                         "  WHERE [IDPromoHeader] = ?";
                 PreparedStatement statement = connection.prepareStatement(insert);
                 statement.setDate(1, promo.getDateStart());
                 statement.setDate(2, promo.getDateEnd());
-                statement.setInt(3, promo.getId());
+                statement.setFloat(3, promo.getVolume());
+                statement.setInt(4, promo.getId());
                 statement.executeUpdate();
                 connection.commit();
                 return true;
@@ -110,7 +115,7 @@ public class FactoryPromo {
                 } else {
                     PromoHeader promoHeader = new PromoHeader(rs.getInt(3), rs.getInt(4),
                             rs.getInt(5), rs.getInt(6), rs.getDate(7), rs.getDate(8),
-                            rs.getInt(9), rs.getInt(10), rs.getInt(11), 0);
+                            rs.getInt(9), rs.getInt(10), rs.getInt(12), rs.getFloat(11));
                     promoList.add(promoHeader);
                 }
             }

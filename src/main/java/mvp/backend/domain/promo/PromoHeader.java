@@ -13,12 +13,12 @@ public class PromoHeader {
     private int statusApprovalId;
 
     private int days;
-    private int volume;
+    private float volume;
 
     public PromoHeader() {
     }
 
-    public PromoHeader(int id, int skuId, int promoId, int addressId, Date dateStart, Date dateEnd, int userId, int statusApprovalId, int days, int volume) {
+    public PromoHeader(int id, int skuId, int promoId, int addressId, Date dateStart, Date dateEnd, int userId, int statusApprovalId, int days, float volume) {
         this.id = id;
         this.skuId = skuId;
         this.promoId = promoId;
@@ -103,11 +103,11 @@ public class PromoHeader {
         this.days = days;
     }
 
-    public int getVolume() {
+    public float getVolume() {
         return volume;
     }
 
-    public void setVolume(int volume) {
+    public void setVolume(float volume) {
         this.volume = volume;
     }
 }
