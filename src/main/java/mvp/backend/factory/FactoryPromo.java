@@ -84,16 +84,18 @@ public class FactoryPromo {
         }
         return true;
     }
-    public static List<PromoSKU> getPromoList(){
+    public static List<PromoSKU> getPromoList(Date dateStart, Date dateEnd){
         List<PromoSKU> promoSKUList = new ArrayList<>();
         try {
             Connection connection = DriverManager.getConnection(ServerProperty.CONNECTION_STRING);
             String select = "SELECT s.[IdSKU], [Material_Desc_RUS], h.*, DATEDIFF(day, h.[DateMin], h.[DateMax]) + 1" +
                     "  FROM [PromoPlannerMVP].[dbo].[_SPR_SKU] s" +
-                    "  left join Promo_Header as h on s.IdSKU = h.IdSKU" +
+                    "  left join (select * from Promo_Header where DateMax > ? AND DateMin < ?) as h on s.IdSKU = h.IdSKU" +
                     "  where EXISTS(SELECT 1 from [dbo].[_SPR_Martrix] m where s.IdSKU = m.IdSKU) AND " +
-                    "  [Material_Desc_RUS] is not null";
+                    "  [Material_Desc_RUS] is not null"; //TODO
             PreparedStatement statement = connection.prepareStatement(select);
+            statement.setDate(1, dateStart);
+            statement.setDate(2, dateEnd);
             ResultSet rs = statement.executeQuery();
             List<PromoHeader> promoList = new ArrayList<>();
             SKU sku = new SKU();

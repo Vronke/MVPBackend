@@ -16,8 +16,9 @@ import java.util.List;
 public class PromoController {
     @PostMapping("/getPromoList")
 //    public List<PromoSKU> getPromoList(@RequestBody Filter[] filter) {
-    public List<PromoSKU> getPromoList() {
-        return FactoryPromo.getPromoList();
+    public List<PromoSKU> getPromoList(@RequestParam Date dateStart,
+                                       @RequestParam Date dateEnd) {
+        return FactoryPromo.getPromoList(dateStart, dateEnd);
     }
 
     @PostMapping(value = "/createPromo")
