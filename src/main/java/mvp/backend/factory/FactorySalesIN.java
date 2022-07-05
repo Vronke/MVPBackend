@@ -35,4 +35,26 @@ public class FactorySalesIN {
             return null;
         }
     }
+    public static Float getFactsSalesInByPeriodAndSKU(Date dateStart, Date dateEnd, int skuId) {
+        try {
+            Connection connection = DriverManager.getConnection(ServerProperty.CONNECTION_STRING);
+            String select = "select SUM([Sell-in Tonnes]) * 1000" +
+                    "  from _SPR_Date_Week w" +
+                    "  inner join _SPR_Date_Day as d on d.IdWeek = w.IdWeek" +
+                    "  inner join _SPR_Date_Year as y on y.IdYear = d.idYear" +
+                    "  inner join [FactSalesIN] as f on d.IdDay = f.IdDate" +
+                    "  where IdSKU = ? AND d.Day>= ? AND d.Day <= ?";
+            PreparedStatement statement = connection.prepareStatement(select);
+            statement.setInt(1, skuId);
+            statement.setDate(2, dateStart);
+            statement.setDate(3, dateEnd);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return rs.getFloat(1);
+            }
+            return 0F;
+        } catch (SQLException e) {
+            return 0F;
+        }
+    }
 }

@@ -22,7 +22,7 @@ public class PromoController {
     }
 
     @PostMapping(value = "/createPromo")
-    public int createPromo(@RequestBody PromoSKU promoSku) {
+    public PromoHeader createPromo(@RequestBody PromoSKU promoSku) {
         return FactoryPromo.createPromo(promoSku.getSku(), promoSku.getPromoList()[0]);
     }
 
@@ -32,8 +32,13 @@ public class PromoController {
     }
 
     @PostMapping("/updatePromo")
-    public boolean updatePromo(@RequestBody PromoSKU promoSku) {
+    public PromoHeader updatePromo(@RequestBody PromoSKU promoSku) {
         return FactoryPromo.updatePromo(promoSku.getSku(), promoSku.getPromoList()[0]);
+    }
+
+    @PostMapping("/deletePromo")
+    public boolean deletePromo(@RequestParam int id) {
+        return FactoryPromo.deletePromo(id);
     }
 
     @PostMapping("/getFactsSalesInOfWeekBySKU")
@@ -41,5 +46,12 @@ public class PromoController {
                                                   @RequestParam Date dateEnd,
                                                   @RequestParam int skuId){
         return FactorySalesIN.getFactsSalesInOfWeekBySKU(dateStart, dateEnd, skuId);
+    }
+
+    @PostMapping("/getFactsSalesInByPeriodAndSKU")
+    public Float getFactsSalesInByPeriodAndSKU(@RequestParam Date dateStart,
+                                                  @RequestParam Date dateEnd,
+                                                  @RequestParam int skuId){
+        return FactorySalesIN.getFactsSalesInByPeriodAndSKU(dateStart, dateEnd, skuId);
     }
 }

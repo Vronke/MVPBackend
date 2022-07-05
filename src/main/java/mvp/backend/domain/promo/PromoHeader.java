@@ -11,14 +11,31 @@ public class PromoHeader {
     private Date dateEnd;
     private int userId;
     private int statusApprovalId;
-
     private int days;
+    private int shippingDays;
     private float volume;
+    private Date orderDateStart;
+    private Date orderDateEnd;
+    private Date shippingDateStart;
+    private Date shippingDateEnd;
+    private String approving;
+    private Float discount;
+    private int addPlacements;
+    private Float addExpenses;
+    private int shelfMechanics;
+    private int distribution;
+    private Float outlets;
+    private Float addVolume;
+    private Float chainVolume;
 
     public PromoHeader() {
     }
 
-    public PromoHeader(int id, int skuId, int promoId, int addressId, Date dateStart, Date dateEnd, int userId, int statusApprovalId, int days, float volume) {
+    public PromoHeader(int id, int skuId, int promoId, int addressId, Date dateStart, Date dateEnd, int userId,
+                       int statusApprovalId, int days, float volume, Date orderDateStart, Date orderDateEnd,
+                       Date shippingDateStart, Date shippingDateEnd, String approving, Float discount,
+                       int addPlacements, Float addExpenses, int shelfMechanics, int distribution,
+                       Float outlets, Float addVolume, Float chainVolume, int shippingDays) {
         this.id = id;
         this.skuId = skuId;
         this.promoId = promoId;
@@ -29,6 +46,20 @@ public class PromoHeader {
         this.statusApprovalId = statusApprovalId;
         this.days = days;
         this.volume = volume;
+        this.orderDateStart = orderDateStart;
+        this.orderDateEnd = orderDateEnd;
+        this.shippingDateStart = shippingDateStart;
+        this.shippingDateEnd = shippingDateEnd;
+        this.approving = approving;
+        this.discount = discount;
+        this.addPlacements = addPlacements;
+        this.addExpenses = addExpenses;
+        this.shelfMechanics = shelfMechanics;
+        this.distribution = distribution;
+        this.outlets = outlets;
+        this.addVolume = addVolume;
+        this.chainVolume = chainVolume;
+        this.shippingDays = shippingDays;
     }
 
     public int getId() {
@@ -109,5 +140,117 @@ public class PromoHeader {
 
     public void setVolume(float volume) {
         this.volume = volume;
+    }
+
+    public Date getOrderDateStart() {
+        return orderDateStart;
+    }
+
+    public void setOrderDateStart(Date orderDateStart) {
+        this.orderDateStart = orderDateStart;
+    }
+
+    public Date getOrderDateEnd() {
+        return orderDateEnd;
+    }
+
+    public void setOrderDateEnd(Date orderDateEnd) {
+        this.orderDateEnd = orderDateEnd;
+    }
+
+    public Date getShippingDateStart() {
+        return shippingDateStart;
+    }
+
+    public void setShippingDateStart(Date shippingDateStart) {
+        this.shippingDateStart = shippingDateStart;
+    }
+
+    public Date getShippingDateEnd() {
+        return shippingDateEnd;
+    }
+
+    public void setShippingDateEnd(Date shippingDateEnd) {
+        this.shippingDateEnd = shippingDateEnd;
+    }
+
+    public String getApproving() {
+        return approving;
+    }
+
+    public void setApproving(String approving) {
+        this.approving = approving;
+    }
+
+    public Float getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Float discount) {
+        this.discount = discount;
+    }
+
+    public int getAddPlacements() {
+        return addPlacements;
+    }
+
+    public void setAddPlacements(int addPlacements) {
+        this.addPlacements = addPlacements;
+    }
+
+    public Float getAddExpenses() {
+        return addExpenses;
+    }
+
+    public void setAddExpenses(Float addExpenses) {
+        this.addExpenses = addExpenses;
+    }
+
+    public int getShelfMechanics() {
+        return shelfMechanics;
+    }
+
+    public void setShelfMechanics(int shelfMechanics) {
+        this.shelfMechanics = shelfMechanics;
+    }
+
+    public int getDistribution() {
+        return distribution;
+    }
+
+    public void setDistribution(int distribution) {
+        this.distribution = distribution;
+    }
+
+    public Float getOutlets() {
+        return outlets;
+    }
+
+    public void setOutlets(Float outlets) {
+        this.outlets = outlets;
+    }
+
+    public Float getAddVolume() {
+        return addVolume;
+    }
+
+    public void setAddVolume(Float addVolume) {
+        this.addVolume = addVolume;
+    }
+
+    public Float getChainVolume() {
+        return chainVolume;
+    }
+
+    public void setChainVolume(Float chainVolume) {
+        this.chainVolume = chainVolume;
+    }
+
+    public int getShippingDays() {
+        return shippingDays;
+    }
+
+    public void setShippingDays(int shippingDays) {
+        this.shippingDays = shippingDays;
     }
 }
