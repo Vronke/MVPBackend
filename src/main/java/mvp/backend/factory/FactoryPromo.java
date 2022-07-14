@@ -92,7 +92,6 @@ public class FactoryPromo {
             Connection connection = null;
             try {
                 connection = DriverManager.getConnection(ServerProperty.CONNECTION_STRING);
-                connection.setAutoCommit(false);
                 connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
                 String insert = "UPDATE [PromoPlannerMVP].[dbo].[Promo_Header]" +
                         "  SET [DateMin] = ?, [DateMax] = ?, Volume = ?, Discount = ?," +
@@ -156,8 +155,8 @@ public class FactoryPromo {
         try {
             Connection connection = DriverManager.getConnection(ServerProperty.CONNECTION_STRING);
             String select = "SELECT s.[IdSKU], [Material_Desc_RUS], h.*, " +
-                    "  DATEDIFF(day, h.[DateMin], h.[DateMax]), " +
-                    "  DATEDIFF(day, h.[ShippingDateMin], h.[ShippingDateMax])" +
+                    "  DATEDIFF(day, h.[DateMin], h.[DateMax]) + 1, " +
+                    "  DATEDIFF(day, h.[ShippingDateMin], h.[ShippingDateMax]) + 1" +
                     "  FROM [PromoPlannerMVP].[dbo].[_SPR_SKU] s" +
                     "  left join (select * from Promo_Header where DateMax > ? AND DateMin < ?) as h on s.IdSKU = h.IdSKU" +
                     "  where EXISTS(SELECT 1 from [dbo].[_SPR_Martrix] m where s.IdSKU = m.IdSKU) AND " +
@@ -222,8 +221,8 @@ public class FactoryPromo {
     private static PromoHeader getPromoByID(Connection connection, int id) {
         try {
 
-            String select = "SELECT *, DATEDIFF(day, [DateMin], [DateMax])," +
-                    " DATEDIFF(day, [ShippingDateMin], [ShippingDateMax])" +
+            String select = "SELECT *, DATEDIFF(day, [DateMin], [DateMax]) + 1," +
+                    " DATEDIFF(day, [ShippingDateMin], [ShippingDateMax]) + 1" +
                     " FROM [PromoPlannerMVP].[dbo].[Promo_Header]" +
                     " WHERE [IDPromoHeader] = ?";
             PreparedStatement statement = connection.prepareStatement(select);
