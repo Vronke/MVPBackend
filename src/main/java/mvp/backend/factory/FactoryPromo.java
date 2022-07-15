@@ -4,6 +4,7 @@ import mvp.backend.domain.ServerProperty;
 import mvp.backend.domain.promo.PromoHeader;
 import mvp.backend.domain.promo.PromoSKU;
 import mvp.backend.domain.promo.SKU;
+import mvp.backend.domain.promo.SprPromo;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -21,28 +22,22 @@ public class FactoryPromo {
                         "  ([IdSKU], [IdPromo], [IdAdd], [DateMin], [DateMax], [IdUser], [IdStatusApproval], Volume, " +
                         "  [Discount], [AddPlacements], [AddExpenses], [ShelfMechanics], [Distribution],[Outlets], " +
                         "  [AddVolume], [ChainVolume])" +
-                        "  VALUES (?, " +
-                        "  (SELECT top 1 IdPromo " +
-                        "  FROM [PromoPlannerMVP].[dbo].[_SPR_Promo] " +
-                        "  where [Type of promo] is not null " +
-                        "  order by ABS(DATEDIFF(day, [Start date - Shelf], ?)) + " +
-                        "  ABS(DATEDIFF(day, [Finish date - Shelf], ?)))" +
+                        "  VALUES (?, ?" +
                         ", 0, ?, ?, 0, 0, ?, ?, ?, ?, ?, ?, ?, ?, ?); SELECT SCOPE_IDENTITY()";
                 PreparedStatement statement = connection.prepareStatement(insert);
                 statement.setInt(1, sku.getId());
-                statement.setDate(2, promo.getDateStart());
-                statement.setDate(3, promo.getDateEnd());
-                statement.setDate(4, promo.getDateStart());
-                statement.setDate(5, promo.getDateEnd());
-                statement.setFloat(6, promo.getVolume());
-                statement.setFloat(7, promo.getDiscount());
-                statement.setInt(8, promo.getAddPlacements());
-                statement.setFloat(9, promo.getAddExpenses());
-                statement.setInt(10, promo.getShelfMechanics());
-                statement.setInt(11, promo.getDistribution());
-                statement.setFloat(12, promo.getOutlets());
-                statement.setFloat(13, promo.getAddVolume());
-                statement.setFloat(14, promo.getChainVolume());
+                statement.setInt(2, promo.getPromoId());
+                statement.setDate(3, promo.getDateStart());
+                statement.setDate(4, promo.getDateEnd());
+                statement.setFloat(5, promo.getVolume());
+                statement.setFloat(6, promo.getDiscount());
+                statement.setInt(7, promo.getAddPlacements());
+                statement.setFloat(8, promo.getAddExpenses());
+                statement.setInt(9, promo.getShelfMechanics());
+                statement.setInt(10, promo.getDistribution());
+                statement.setFloat(11, promo.getOutlets());
+                statement.setFloat(12, promo.getAddVolume());
+                statement.setFloat(13, promo.getChainVolume());
 
                 ResultSet rs = statement.executeQuery();
                 if (rs.next()){
@@ -97,11 +92,7 @@ public class FactoryPromo {
                         "  SET [DateMin] = ?, [DateMax] = ?, Volume = ?, Discount = ?," +
                         "  AddPlacements = ?, AddExpenses = ?, ShelfMechanics = ?," +
                         "  Distribution = ?, Outlets = ?, AddVolume = ?, ChainVolume = ?," +
-                        "  [IdPromo] = (SELECT top 1 IdPromo " +
-                        "  FROM [PromoPlannerMVP].[dbo].[_SPR_Promo] " +
-                        "  where [Type of promo] is not null " +
-                        "  order by ABS(DATEDIFF(day, [Start date - Shelf], ?)) + " +
-                        "  ABS(DATEDIFF(day, [Finish date - Shelf], ?)))" +
+                        "  [IdPromo] = ?" +
                         "  WHERE [IDPromoHeader] = ?";
                 PreparedStatement statement = connection.prepareStatement(insert);
                 statement.setDate(1, promo.getDateStart());
@@ -115,9 +106,8 @@ public class FactoryPromo {
                 statement.setFloat(9, promo.getOutlets());
                 statement.setFloat(10, promo.getAddVolume());
                 statement.setFloat(11, promo.getChainVolume());
-                statement.setDate(12, promo.getDateStart());
-                statement.setDate(13, promo.getDateEnd());
-                statement.setInt(14, promo.getId());
+                statement.setInt(12, promo.getPromoId());
+                statement.setInt(13, promo.getId());
 
                 statement.executeUpdate();
                 setPeriodFromDirectory(connection, promo.getId());
@@ -149,6 +139,31 @@ public class FactoryPromo {
         } catch (SQLException e){
             return false;
         }
+    }
+    public static List<SprPromo> getSprPromoList(Date dateStart, Date dateEnd){
+        List<SprPromo> sprPromoList = new ArrayList<>();
+        try {
+            Connection connection = DriverManager.getConnection(ServerProperty.CONNECTION_STRING);
+            String select = "SELECT [IdPromo], [Format], [Name of Promo], [Type of promo], [Описание]" +
+                    "  ,[Start date - Shelf], [Finish date - Shelf], [Start date - Shipment], [Finish date - Shipment]" +
+                    "  ,DATEDIFF(day, [Start date - Shelf], [Finish date - Shelf]) + 1 " +
+                    "  ,DATEDIFF(day, [Start date - Shipment], [Finish date - Shipment]) + 1" +
+                    "  FROM [PromoPlannerMVP].[dbo].[_SPR_Promo]" +
+                    "  WHERE [Start date - Shelf] < ? AND [Finish date - Shelf] > ?";
+            PreparedStatement statement = connection.prepareStatement(select);
+            statement.setDate(1, dateEnd);
+            statement.setDate(2, dateStart);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()){
+                SprPromo promo = new SprPromo(rs.getInt(1), rs.getString(2), rs.getString(3),
+                        rs.getString(4), rs.getString(5), rs.getDate(6), rs.getDate(7),
+                        rs.getDate(8), rs.getDate(9), rs.getInt(10), rs.getInt(11));
+                sprPromoList.add(promo);
+            }
+        } catch (SQLException e){
+            return null;
+        }
+        return sprPromoList;
     }
     public static List<PromoSKU> getPromoList(Date dateStart, Date dateEnd){
         List<PromoSKU> promoSKUList = new ArrayList<>();

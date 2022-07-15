@@ -3,6 +3,7 @@ package mvp.backend.controller;
 import mvp.backend.domain.promo.PromoHeader;
 import mvp.backend.domain.promo.PromoSKU;
 import mvp.backend.domain.promo.SKU;
+import mvp.backend.domain.promo.SprPromo;
 import mvp.backend.factory.FactoryPromo;
 import mvp.backend.factory.FactorySalesIN;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -19,6 +20,13 @@ public class PromoController {
     public List<PromoSKU> getPromoList(@RequestParam Date dateStart,
                                        @RequestParam Date dateEnd) {
         return FactoryPromo.getPromoList(dateStart, dateEnd);
+    }
+
+    @PostMapping("/getSprPromoList")
+//    public List<PromoSKU> getPromoList(@RequestBody Filter[] filter) {
+    public List<SprPromo> getSprPromoList(@RequestParam Date dateStart,
+                                          @RequestParam Date dateEnd) {
+        return FactoryPromo.getSprPromoList(dateStart, dateEnd);
     }
 
     @PostMapping(value = "/createPromo")
