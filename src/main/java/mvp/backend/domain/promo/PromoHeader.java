@@ -27,6 +27,7 @@ public class PromoHeader {
     private Float outlets;
     private Float addVolume;
     private Float chainVolume;
+    private int typeOfPromoId;
 
     public PromoHeader() {
     }
@@ -35,7 +36,7 @@ public class PromoHeader {
                        int statusApprovalId, int days, float volume, Date orderDateStart, Date orderDateEnd,
                        Date shippingDateStart, Date shippingDateEnd, String approving, Float discount,
                        int addPlacements, Float addExpenses, int shelfMechanics, int distribution,
-                       Float outlets, Float addVolume, Float chainVolume, int shippingDays) {
+                       Float outlets, Float addVolume, Float chainVolume, int shippingDays, int typeOfPromoId) {
         this.id = id;
         this.skuId = skuId;
         this.promoId = promoId;
@@ -45,6 +46,7 @@ public class PromoHeader {
         this.userId = userId;
         this.statusApprovalId = statusApprovalId;
         this.days = days;
+        this.shippingDays = shippingDays;
         this.volume = volume;
         this.orderDateStart = orderDateStart;
         this.orderDateEnd = orderDateEnd;
@@ -59,7 +61,15 @@ public class PromoHeader {
         this.outlets = outlets;
         this.addVolume = addVolume;
         this.chainVolume = chainVolume;
-        this.shippingDays = shippingDays;
+        this.typeOfPromoId = typeOfPromoId;
+    }
+
+    public int getTypeOfPromoId() {
+        return typeOfPromoId;
+    }
+
+    public void setTypeOfPromoId(int typeOfPromoId) {
+        this.typeOfPromoId = typeOfPromoId;
     }
 
     public int getId() {

@@ -1,9 +1,6 @@
 package mvp.backend.controller;
 
-import mvp.backend.domain.promo.PromoHeader;
-import mvp.backend.domain.promo.PromoSKU;
-import mvp.backend.domain.promo.SKU;
-import mvp.backend.domain.promo.SprPromo;
+import mvp.backend.domain.promo.*;
 import mvp.backend.factory.FactoryPromo;
 import mvp.backend.factory.FactorySalesIN;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -21,7 +18,14 @@ public class PromoController {
                                        @RequestParam Date dateEnd) {
         return FactoryPromo.getPromoList(dateStart, dateEnd);
     }
-
+    @PostMapping("/getCannibalization")
+    public List<Cannibalization> getCannibalization(@RequestParam int id) {
+        return FactoryPromo.getCannibalization(id);
+    }
+    @PostMapping("/updateCannibalization")
+    public boolean updateCannibalization(@RequestBody Cannibalization[] cannibalizationList) {
+        return FactoryPromo.updateCannibalization(cannibalizationList);
+    }
     @PostMapping("/getSprPromoList")
 //    public List<PromoSKU> getPromoList(@RequestBody Filter[] filter) {
     public List<SprPromo> getSprPromoList(@RequestParam Date dateStart,

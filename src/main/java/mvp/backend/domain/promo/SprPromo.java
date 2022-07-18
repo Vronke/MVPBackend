@@ -6,7 +6,7 @@ public class SprPromo {
     private int id;
     private String format;
     private String nameOfPromo;
-    private String typeOfPromo;
+    private int typeOfPromoId;
     private String description;
     private Date startShelfDate;
     private Date endShelfDate;
@@ -18,13 +18,13 @@ public class SprPromo {
     public SprPromo() {
     }
 
-    public SprPromo(int id, String format, String nameOfPromo, String typeOfPromo, String description,
+    public SprPromo(int id, String format, String nameOfPromo, int typeOfPromoId, String description,
                     Date startShelfDate, Date endShelfDate, Date startShipmentDate, Date endShipmentDate,
                     int days, int shippingDays) {
         this.id = id;
         this.format = format;
         this.nameOfPromo = nameOfPromo;
-        this.typeOfPromo = typeOfPromo;
+        this.typeOfPromoId = typeOfPromoId;
         this.description = description;
         this.startShelfDate = startShelfDate;
         this.endShelfDate = endShelfDate;
@@ -58,12 +58,12 @@ public class SprPromo {
         this.nameOfPromo = nameOfPromo;
     }
 
-    public String getTypeOfPromo() {
-        return typeOfPromo;
+    public int getTypeOfPromoId() {
+        return typeOfPromoId;
     }
 
-    public void setTypeOfPromo(String typeOfPromo) {
-        this.typeOfPromo = typeOfPromo;
+    public void setTypeOfPromoId(int typeOfPromoId) {
+        this.typeOfPromoId = typeOfPromoId;
     }
 
     public String getDescription() {
